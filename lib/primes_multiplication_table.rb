@@ -17,6 +17,7 @@ class PrimesMultiplicationTable
       add_divider_row_to_table if row_index == 1
       add_row_to_table(row, row_index)
     end
+
     print table
     nil
   end
@@ -26,8 +27,9 @@ class PrimesMultiplicationTable
     attr_writer :table
 
     def add_row_to_table(row, row_index)
-      row.each_with_index do |num, num_index|
-        table << add_num_to_row(num, row_index, num_index)
+      row.each_with_index do |cell, cell_index|
+        table << add_cell_to_row(cell, row_index, cell_index)
+        # Shovel empty string for space between cells to increase readability
         table << '  '
       end
       table << "\n"
@@ -40,13 +42,14 @@ class PrimesMultiplicationTable
       table << "\n"
     end
 
-    def add_num_to_row(num, row_index, num_index)
-      if row_index == 0 && num_index == 0
-        num = '      '
-      elsif num_index == 0
-        num = "#{num.to_s.rjust(padding)}  |"
-      end
-      num.to_s.rjust(padding)
+    def add_cell_to_row(cell, row_index, cell_index)
+      # This cell is the top left corner, so it's just an empty string
+      cell = '      ' if row_index == 0 && cell_index == 0
+      # Add padding to cell
+      cell = cell.to_s.rjust(padding)
+      # If it's the first cell in a row, add a divider
+      cell = "#{cell}  |" if cell_index == 0 && row_index > 0
+      cell
     end
 
     def padding
@@ -55,8 +58,8 @@ class PrimesMultiplicationTable
       @padding >= 3 ? @padding : 3
     end
 
-    # The first N prime numbers, where N = @size
     def og_primes
+      # The first N prime numbers, where N = @size
       @primes_row ||= [1] + Array(Prime.generate_n_primes(size))
     end
 
@@ -64,7 +67,7 @@ class PrimesMultiplicationTable
     def generate_primes_table
       og_primes.map do |x|
         og_primes.map do |y|
-          x*y
+          x * y
         end
       end
     end

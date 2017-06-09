@@ -1,5 +1,6 @@
 class Prime
   def self.is_prime?(num)
+    # Base case: smallest prime number is 2, so any number < 2 is not prime.
     return false if num < 2
 
     (2...num).each do |div|
@@ -10,9 +11,8 @@ class Prime
   end
 
   def self.generate_n_primes(n = 0)
-    if n < 0 || (!n.is_a? Integer)
-      return nil
-    end
+    # Base case: can only generate_n_primes if n is an Integer >= 0
+    return nil if n < 0 || (!n.is_a? Integer)
 
     primes, num = [], 2
 
